@@ -1,0 +1,74 @@
+#DB_UNIVERSITY
+##Focus dell'esercizio
+Modellizzare la struttura di un database per memorizzare tutti i dati riguardanti una università:
+- sono presenti diversi Dipartimenti (es.: Lettere e Filosofia, Matematica, Ingegneria ecc.);
+- ogni Dipartimento offre più Corsi di Laurea (es.: Civiltà e Letterature Classiche, Informatica, Ingegneria Elettronica ecc..)
+- ogni Corso di Laurea prevede diversi Corsi (es.: Letteratura Latina, Sistemi Operativi 1, Analisi Matematica 2 ecc.);
+- ogni Corso può essere tenuto da diversi Insegnanti;
+- ogni Corso prevede più appelli d'Esame;
+- ogni Studente è iscritto ad un solo Corso di Laurea;
+- ogni Studente può iscriversi a più appelli di Esame;
+- per ogni appello d'Esame a cui lo Studente ha partecipato, è necessario memorizzare il voto ottenuto, anche se non sufficiente.
+Pensiamo a quali entità (tabelle) creare per il nostro database e cerchiamo poi di stabilirne le relazioni. Infine, andiamo a definire le colonne e i tipi di dato di ogni tabella.
+--------------------------------------------------------------------------------------------------------------------------
+Tabella dipartimenti
+Nome colonna		Tipo		attributi		indici  
+id_dipartimento 	int         	AUTO_INCREMENT          primary key
+nome_dipartimento	varchar(100)	not null
+indirizzo		varchar(200)	not null
+email			varchar(100)	not null, unique
+--------------------------------------------------------------------------------------------------------------------------
+Tabella corsi laurea
+Nome colonna		Tipo		attributi		indici  
+id_corso_laurea		int         	AUTO_INCREMENT          primary key
+nome_corso_laurea	varchar(100)	not null
+codice_corso		int		not null, unique
+id_dipartimento		int					foreign key
+--------------------------------------------------------------------------------------------------------------------------
+
+Tabella corsi/materie
+Nome colonna		Tipo		attributi		indici  
+id_corso		int         	AUTO_INCREMENT          primary key
+nome_corso		varchar(200)	not null
+codice_materia		int		not null, unique
+id_corso_laurea		int					foreign key
+--------------------------------------------------------------------------------------------------------------------------
+
+Tabella insegnanti
+Nome colonna		Tipo		attributi		indici  
+id_insegnante   	int         	AUTO_INCREMENT          primary key
+nome_insegnante		varchar(100)	not null
+cognome_insegnante	varchar(100)	not null
+contatti_insegnante	varchar(200)	not null, unique
+--------------------------------------------------------------------------------------------------------------------------
+
+Tabella studenti
+Nome colonna		Tipo		attributi		indici  
+id_studente		int         	AUTO_INCREMENT          primary key
+nome_cognome		varchar(200)	not null
+tessera_universitaria	varchar(100)	not null, unique
+id_corsi_laurea		int					foreign key
+--------------------------------------------------------------------------------------------------------------------------
+
+Tabella appelli esame
+Nome colonna		Tipo		attributi		indici  
+id_appello_esame	int         	AUTO_INCREMENT          primary key
+id_corsi		int					foreign key
+data			date		not null
+aula			varchar(200)	not null
+--------------------------------------------------------------------------------------------------------------------------
+
+Tabella esami
+Nome colonna		Tipo		attributi		indici  
+id_esame		int         	AUTO_INCREMENT          primary key
+id_appelli		int					foreign key
+id_studente		int					foreign key
+voto			int		not null
+--------------------------------------------------------------------------------------------------------------------------
+
+Tabella corsi_insegnanti
+Nome colonna		Tipo		attributi		indici  
+id_corso_insegnante	int         	AUTO_INCREMENT          primary key
+id_corso		int					foreign key
+id_insegnante		int					foreign key
+--------------------------------------------------------------------------------------------------------------------------
